@@ -4,7 +4,7 @@ on: push
 
 jobs:
   run-mobile-tests:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: setup java
@@ -12,6 +12,7 @@ jobs:
         with:
             distribution: 'temurin'
             java-version: '17'
+
       - name: pull the project into the runner
         uses: actions/checkout@v3
 
@@ -21,9 +22,8 @@ jobs:
           appium -v
           appium &>/dev/null &
 
-      - name: run appium tests
+      - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          arch: arm64-v8a
           script: mvn clean test -Pandroid
