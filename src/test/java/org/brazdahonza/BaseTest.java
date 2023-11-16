@@ -21,14 +21,40 @@ public class BaseTest {
     public AndroidDriver androidDriver;
     public AppiumDriverLocalService appiumDriverLocalService;
 
+//    @BeforeClass
+//    public void configureAppium() throws MalformedURLException {
+//        appiumDriverLocalService = new AppiumServiceBuilder().withAppiumJS(new File("//opt//homebrew//lib//node_modules//appium//build//lib//main.js")).withIPAddress("127.0.0.1").usingPort(4723).build();
+//        appiumDriverLocalService.start();
+//
+//        UiAutomator2Options uiAutomator2Options = new UiAutomator2Options();
+//        uiAutomator2Options.setDeviceName("Pixel 7 API 33");
+//        uiAutomator2Options.setApp("/Users/brazdahonza/IdeaProjects/projekty/appium-java-test2/src/test/java/resources/General-Store.apk");
+//
+//        androidDriver = new AndroidDriver(new URL("http://127.0.0.1:4723"), uiAutomator2Options);
+//    }
+
     @BeforeClass
     public void configureAppium() throws MalformedURLException {
-        appiumDriverLocalService = new AppiumServiceBuilder().withAppiumJS(new File("//opt//homebrew//lib//node_modules//appium//build//lib//main.js")).withIPAddress("127.0.0.1").usingPort(4723).build();
-        appiumDriverLocalService.start();
+        AppiumServiceBuilder builder = new AppiumServiceBuilder();
+        builder.withIPAddress("127.0.0.1").usingPort(4723);
 
         UiAutomator2Options uiAutomator2Options = new UiAutomator2Options();
         uiAutomator2Options.setDeviceName("Pixel 7 API 33");
-        uiAutomator2Options.setApp("/Users/brazdahonza/IdeaProjects/projekty/appium-java-test2/src/test/java/resources/General-Store.apk");
+
+        // Determine the path to the APK based on the environment
+        String workspace = System.getenv("GITHUB_WORKSPACE");
+        String apkPath;
+        if (workspace != null) {
+            // Running in GitHub Actions
+            apkPath = workspace + "/src/test/java/resources/General-Store.apk";
+        } else {
+            // Running Locally
+            apkPath = "src/test/java/resources/General-Store.apk"; // Adjust if necessary
+        }
+        uiAutomator2Options.setApp(new File(apkPath).getAbsolutePath());
+
+        appiumDriverLocalService = builder.build();
+        appiumDriverLocalService.start();
 
         androidDriver = new AndroidDriver(new URL("http://127.0.0.1:4723"), uiAutomator2Options);
     }
