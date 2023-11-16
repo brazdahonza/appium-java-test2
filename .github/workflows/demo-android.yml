@@ -16,10 +16,12 @@ jobs:
       - name: pull the project into the runner
         uses: actions/checkout@v3
 
-      - name: setup appium
+      - name: Setup Appium
         run: |
           npm install -g appium@2.2.1
           appium -v
+          appium driver install uiautomator2 # Install UIAutomator2 driver
+          lsof -i :4723 | grep LISTEN | awk '{print $2}' | xargs kill -9
           appium &>/dev/null &
 
       - name: run tests
