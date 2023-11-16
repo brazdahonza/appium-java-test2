@@ -1,7 +1,6 @@
 package org.brazdahonza;
 
 import org.openqa.selenium.By;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class eCommerce_tc_1 extends BaseTest {
