@@ -25,4 +25,4 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: mvn clean install -Pandroid
+          script: mvn clean test -Pandroid
